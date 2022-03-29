@@ -1,0 +1,28 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_hl_vnpay (0.0.1):
+    - Flutter
+  - network_info_plus (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_hl_vnpay (from `.symlinks/plugins/flutter_hl_vnpay/ios`)
+  - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_hl_vnpay:
+    :path: ".symlinks/plugins/flutter_hl_vnpay/ios"
+  network_info_plus:
+    :path: ".symlinks/plugins/network_info_plus/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_hl_vnpay: b2b9c1f46ad8f8635acd903ce0ea1715bea4907e
+  network_info_plus: b78876159360f5580608c2cea620d6ceffabd0ad
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.11.2

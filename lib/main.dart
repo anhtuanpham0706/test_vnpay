@@ -19,6 +19,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _paymentResultCodeCode = 'Unknown';
+
+
   String format_DateTime(DateTime dateTime, String layout) {
     return DateFormat(layout).format(dateTime).toString();
   }
@@ -52,13 +54,14 @@ class _MyAppState extends State<MyApp> {
         'vnp_CreateDate': '${format_DateTime(DateTime.now(), "yyyyMMddHHmmss")}',
         'vnp_CurrCode': 'VND',
         'vnp_IpAddr': '${wifiIP}',
-        'vnp_BankCode': '',
         'vnp_Locale': 'vn',
-        'vnp_OrderInfo': 'Thanh Toan hoa don coin 30000 VND',
-        'vnp_ReturnUrl': 'http://sdk.merchantbackapp', // Your Server https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/#code-returnurl
+        'vnp_OrderInfo': 'Thanh Toan hoa don ADVN 20000 VND',
+        'vnp_ReturnUrl': 'paymentback://sdk', // Your Server https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/#code-returnurl
         'vnp_TmnCode': tmnCode,
-        'vnp_TxnRef': '604f187c862cd7000',
-        'vnp_Version': '2.1.0'
+        'vnp_TxnRef': DateTime
+            .now()
+            .millisecondsSinceEpoch.toString(),
+        'vnp_Version': '2.0.0'
       };
       final sortedParams = FlutterHlVnpay.instance.sortParams(params);
       final hashDataBuffer = new StringBuffer();
@@ -72,21 +75,19 @@ class _MyAppState extends State<MyApp> {
       final query = Uri(queryParameters: sortedParams).query;
       print('hashData = $hashData');
       print('query = $query');
-
       var bytes = utf8.encode(hashKey + hashData.toString());
       final vnpSecureHash = sha256.convert(bytes);
       final paymentUrl = "$url?$query&vnp_SecureHashType=SHA256&vnp_SecureHash=$vnpSecureHash";
       print('paymentUrl = $paymentUrl');
-      paymentResultCodeCode = (await FlutterHlVnpay.instance.show(paymentUrl: paymentUrl, tmnCode: tmnCode)).toString();
+      final paymentResultCodeCode = await FlutterHlVnpay.instance.show(scheme: 'paymentback', paymentUrl: paymentUrl, tmnCode: tmnCode);
+      print('trang thai thanh toan $paymentResultCodeCode');
     } on PlatformException {
       paymentResultCodeCode = 'Failed to get payment result code';
     }
-
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
     setState(() {
       _paymentResultCodeCode = paymentResultCodeCode;
     });
@@ -105,7 +106,7 @@ class _MyAppState extends State<MyApp> {
               Text('Result Code: $_paymentResultCodeCode\n'),
               RaisedButton(
                 onPressed: this._onBuyCoinPressed,
-                child: Text('30.000 VND'),
+                child: Text('50.000 VND'),
               )
             ],
           ),
